@@ -1,6 +1,11 @@
 package com.avast.android.lecture.github
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.android.utils.FlipperUtils
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
@@ -49,7 +54,17 @@ class App: Application() {
     }
 
     private fun createNotificationChannel() {
-
+        if(Build.VERSION.SDK_INT >= 26) {
+            Log.d(null,"creating notification channel")
+            val channel = NotificationChannel(
+                NOTIFICATION_CHANNEL_MAIN_ID,
+                NOTIFICATION_CHANNEL_MAIN_DESCRIPTION,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = NOTIFICATION_CHANNEL_MAIN_DESCRIPTION
+            }
+            NotificationManagerCompat.from(this).createNotificationChannel(channel)
+        }
     }
 
     companion object {
